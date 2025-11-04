@@ -1,5 +1,5 @@
 import { Db } from "mongodb";
-import { getInstrumentMetadata } from "../dbfno/instrument.service";
+import { getInstrumentMetadata } from "./instrument.service";
 
 let db: Db | null = null;
 
@@ -74,3 +74,4 @@ export const getRecentLTPs = async (limit = 50) => {
     .limit(limit)
     .toArray();
 };
+
