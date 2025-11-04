@@ -1,6 +1,6 @@
 // src/services/option_chain.ts
 import axios from "axios";
-import { scheduleOC } from "../dbfno/dhanPacer";
+import { scheduleOC } from "./dhanPacer";
 
 /* ========= Env / headers ========= */
 const DHAN_ACCESS_TOKEN = (process.env.DHAN_API_KEY || "").trim();
@@ -163,3 +163,4 @@ export function toNormalizedArray(oc: DhanOCMap) {
     .filter((r) => Number.isFinite(r.strike))
     .sort((a, b) => a.strike - b.strike);
 }
+
