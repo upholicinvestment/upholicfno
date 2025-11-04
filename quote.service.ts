@@ -3,7 +3,7 @@ import axios from "axios";
 import { Db } from "mongodb";
 import { Readable } from "stream";
 import csvParser from "csv-parser";
-import { scheduleQuote } from "../dbfno/dhanPacer"; // quote bucket
+import { scheduleQuote } from "./dhanPacer"; // quote bucket
 
 let db: Db | null = null;
 
@@ -744,3 +744,4 @@ export function startFutstkOhlcRefresher() {
 
   setInterval(tick, intervalMs);
 }
+
