@@ -1,7 +1,7 @@
 // src/optionchain/expiries.ts
 import { Express, Request, Response, Router } from "express";
 import { Db } from "mongodb";
-import { fetchExpiryList } from "../dbfno/option_chain";
+import { fetchExpiryList } from "./option_chain";
 
 export default function registerOptionChainExpiries(app: Express, _db: Db) {
   const router = Router();
@@ -20,3 +20,4 @@ export default function registerOptionChainExpiries(app: Express, _db: Db) {
 
   app.use("/api/optionchain", router);
 }
+
