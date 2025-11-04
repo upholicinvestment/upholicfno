@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { getRecentLTPs } from "../dbfno/ltp.service";
+import { getRecentLTPs } from "./ltp.service";
 
 const ltpRoutes = Router();
 
@@ -22,3 +22,4 @@ ltpRoutes.get("/recent", async (req: Request, res: Response): Promise<void> => {
 });
 
 export { ltpRoutes };
+
