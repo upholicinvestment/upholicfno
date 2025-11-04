@@ -10,22 +10,22 @@ import { Server as SocketIOServer } from "socket.io";
 dotenv.config();
 
 /* ---------- DB helper (single place) ---------- */
-import { connectPrimary, connectFno, getPrimaryDb, closeAll } from "./utils/db";
+import { connectPrimary, connectFno, getPrimaryDb, closeAll } from "./db";
 
 /* ---------- Market / data sockets & services (KEEP ONLY THESE) ---------- */
-import { GexLevelsCalc, startGexLevelsEveryMinute } from "./api/gexLevelsCalc";
-import { AdvDecSave, startAdvDecMinuteJob } from "./api/advdecSave";
+import { GexLevelsCalc, startGexLevelsEveryMinute } from "./gexLevelsCalc";
+import { AdvDecSave, startAdvDecMinuteJob } from "./advdecSave";
 
-import { DhanSocket } from "./socket/dhan.socket";
-import { ltpRoutes } from "./routes/ltp.route";
-import { setLtpDatabase } from "./services/ltp.service";
+import { DhanSocket } from "./dhan.socket";
+import { ltpRoutes } from "./ltp.route";
+import { setLtpDatabase } from "./ltp.service";
 
 import {
   fetchAndStoreInstruments,
   setQuoteDatabase,
   startFutstkOhlcRefresher,
-} from "./services/quote.service";
-import { setInstrumentDatabase } from "./services/instrument.service";
+} from "./quote.service";
+import { setInstrumentDatabase } from "./instrument.service";
 
 /* ---------- Option Chain deps & public endpoints (ADDED) ---------- */
 import {
@@ -35,10 +35,10 @@ import {
   getLiveOptionChain,
   toNormalizedArray,
   DhanOptionLeg,
-} from "./services/option_chain";
-import registerOptionChainExpiries from "./api/optionchain/expiries";
-import registerOptionChainSnapshot from "./api/optionchain/snapshot";
-import { istNowString, istTimestamp } from "./utils/time";
+} from "./option_chain";
+import registerOptionChainExpiries from "./expiries";
+import registerOptionChainSnapshot from "./snapshot";
+import { istNowString, istTimestamp } from "./time";
 import { getDhanMinGap } from "./utils/dhanPacer";
 
 /// small helpers
@@ -518,3 +518,4 @@ process.on("SIGINT", () => shutdown(0));
 process.on("SIGTERM", () => shutdown(0));
 
 export { io };
+
