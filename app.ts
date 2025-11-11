@@ -41,6 +41,9 @@ import registerOptionChainSnapshot from "./snapshot";
 import { istNowString, istTimestamp } from "./time";
 import { getDhanMinGap } from "./utils/dhanPacer";
 
+/* ---------- Volatility / Score materializer (Upholic_Score_Vol) ---------- */
+import { startOcRowsMaterializer } from "./oc_rows_cache";
+
 /// small helpers
 function sleep(ms: number) {
   return new Promise((r) => setTimeout(r, ms));
@@ -459,6 +462,46 @@ async function startServer() {
       console.warn("⚠️ startOptionChainWatcher failed:", e?.message || e);
     }
 
+    /* ================== Start Upholic_Score_Vol materializer ================== */
+    try {
+      const mongoUri =
+        process.env.MONGO_URII ||
+        process.env.MONGO_URI ||
+        "mongodb://localhost:27017";
+
+      // Prefer explicit FNO DB name, else use the same DB the watcher writes to
+      const dbName =
+        process.env.MONGO_DB_NAMEE ||
+        dbForFnoWork.databaseName ||
+        db.databaseName;
+
+      ocRowsTimer = startOcRowsMaterializer({
+        mongoUri,
+        dbName,
+        underlyings: [
+          {
+            id: Number(process.env.OC_UNDERLYING_ID || 13),
+            segment: process.env.OC_SEGMENT || "IDX_I",
+          },
+          // add more underlyings here if needed
+        ],
+        intervals: [3, 5, 15, 30],
+        sinceMs: 12 * 60 * 60 * 1000,
+        mode: "level",
+        unit: "bps",
+      });
+
+      console.log(
+        "✅ Upholic_Score_Vol materializer started on DB:",
+        dbName
+      );
+    } catch (e: any) {
+      console.warn(
+        "⚠️ startOcRowsMaterializer failed:",
+        e?.message || e
+      );
+    }
+
     /* ================== Start HTTP + Socket.IO ================== */
     const PORTA = Number(process.env.PORTA) || 8100;
     httpServer.listen(PORTA, () => {
@@ -518,4 +561,3 @@ process.on("SIGINT", () => shutdown(0));
 process.on("SIGTERM", () => shutdown(0));
 
 export { io };
-
