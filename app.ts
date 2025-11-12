@@ -39,7 +39,7 @@ import {
 import registerOptionChainExpiries from "./expiries";
 import registerOptionChainSnapshot from "./snapshot";
 import { istNowString, istTimestamp } from "./time";
-import { getDhanMinGap } from "./utils/dhanPacer";
+import { getDhanMinGap } from "./dhanPacer";
 
 /// small helpers
 function sleep(ms: number) {
@@ -518,4 +518,5 @@ process.on("SIGINT", () => shutdown(0));
 process.on("SIGTERM", () => shutdown(0));
 
 export { io };
+
 
